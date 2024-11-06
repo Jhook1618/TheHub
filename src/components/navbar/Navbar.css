@@ -13,7 +13,7 @@
 
 /* Navbar Items */
 .item {
-  color: #015affc9;
+  color: #07c0e0c9;
   cursor: pointer;
   text-decoration: none;
   padding: 10px 15px;
@@ -83,6 +83,9 @@
   font-weight: 700;
   transition: background-color 0.8s;
 }
+
+
+
 
 .search-button:hover {
   background-color: #052549;
