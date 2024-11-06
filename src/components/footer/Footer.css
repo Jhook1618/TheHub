@@ -1,0 +1,29 @@
+.footer {
+  color: rgba(79, 72, 72, 0.3);
+  justify-content: center;
+  background-color: rgba(128, 128, 128, 0.19);
+  /* border-radius: 50%; */
+  border-top: 5px;
+  border-color: blue;
+  display: flex;
+  align-items: center;
+  font-size: 0.8em;
+  font-weight: 400;
+}
+
+.hub2 {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 1px;
+  background-color: rgba(0, 255, 255, 0.3);
+  border-radius: 5px 0 0 5px;
+  font-weight: 800;
+  padding-left: 0.5em;
+}
+
+.tronics2 {
+  color: rgba(0, 255, 255, 0.7);
+  background-color: rgba(5, 37, 73, 0.3);
+  font-weight: 800;
+  padding-right: 0.5em;
+  border-radius: 0 5px 5px 0;
+}

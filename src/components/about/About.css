@@ -1,0 +1,210 @@
+.about-container {
+  background-color: rgba(128, 128, 128, 0.489);
+}
+
+/* Contacts Section Stat */
+.head-contacts {
+  display: flex;
+  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+  padding: 10px;
+  background: rgba(128, 128, 128, 0.333);
+}
+
+.a-call {
+  text-decoration: none;
+  color: grey;
+}
+
+.call {
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.call-icon {
+  font-size: 25px;
+  color: rgba(0, 0, 0, 0.338);
+  transition: 0.5s;
+}
+
+.a-call:hover {
+  text-decoration: none;
+}
+
+.call:hover {
+  color: #007bff;
+}
+
+.call-icon:hover {
+  color: #007bff;
+}
+
+.a-email {
+  text-decoration: none;
+  color: grey;
+}
+
+.email {
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.email-icon {
+  color: grey;
+  font-size: 25px;
+  transition: 0.5s;
+}
+
+.a-email:hover {
+  text-decoration: none;
+}
+
+.email:hover {
+  color: #007bff;
+}
+
+.email-icon:hover {
+  color: #007bff;
+}
+
+.a-whatsapp {
+  text-decoration: none;
+  color: grey;
+}
+
+.whatsapp {
+  cursor: pointer;
+}
+
+.whatsapp-icon {
+  color: grey;
+  font-size: 25px;
+  transition: 0.5s;
+}
+
+.a-whatsapp:hover {
+  text-decoration: none;
+}
+
+.whatsapp:hover {
+  color: #007bff;
+}
+
+.whatsapp-icon:hover {
+  color: green;
+}
+/* Contacts Section End */
+
+/* About Section Start */
+.head-titles {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: grey;
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  align-items: center;
+}
+
+.heads {
+  font-weight: 700;
+}
+/* About Section End */
+
+/* Social & Payment Icons Section Start */
+.social-icons {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  font-size: 2em;
+  align-items: center;
+}
+
+.facebook {
+  color: blue;
+}
+
+.facebook-icon {
+  font-size: 35px;
+}
+
+.instagram {
+  color: rgb(13, 13, 13);
+}
+
+.instagram-icon {
+  font-size: 35px;
+}
+
+.X {
+  color: #007bff;
+}
+
+.X-icon {
+  font-size: 35px;
+}
+
+.tiktok {
+  color: black;
+}
+
+.tiktok-icon {
+  font-size: 35px;
+}
+/* Social & Payment Icons Section End */
+
+/* Payment Section Start */
+.payment-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px;
+}
+
+.method-dcard {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  /* color: #007bff; */
+  /* background-color: rgba(130, 121, 121, 0.242); */
+  justify-content: center;
+  color: aliceblue;
+}
+
+.method-mpesa {
+  color: rgb(78, 168, 78);
+  font-weight: 600;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+/* .font-icon {
+  justify-content: center;
+  justify-items: center;
+  color: #007bff;
+}
+
+.text-icon {
+  color: red;
+} */
+
+.svg-debit {
+  color: rgb(93, 70, 52);
+  font-size: 4em;
+}
+
+.svg-master {
+  color: rgb(192, 178, 99);
+  font-size: 4em;
+}
+
+.svg-pal {
+  color: #007bff;
+  font-size: 4em;
+}
+
+.svg-bit {
+  color: rgb(182, 160, 34);
+  font-size: 4em;
+}
+/* Payment Section End */

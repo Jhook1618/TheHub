@@ -1,0 +1,200 @@
+.nav-bar.container {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  background: linear-gradient(150deg, #00e1ff, #116270, #03055f);
+  padding: 5px 10px;
+  color: #ffffff;
+  /* position: relative; */
+  /* border-radius: 10px 10px 0 0; */
+  max-width: 100%;
+  box-shadow: 5px 8px 8px rgba(0, 0, 0, 0.274);
+}
+
+/* Navbar Items */
+.item {
+  color: #015affc9;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+/* Style the logo container */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50px;
+  box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.144);
+}
+
+/* Style the logo image */
+.image.logo {
+  max-width: 60px; /* Control the logo size */
+  width: auto;
+  height: auto;
+  transition: transform 0.3s ease, filter 0.3s ease; /* Smooth transition for hover effects */
+  filter: drop-shadow(
+    0px 4px 6px rgba(0, 0, 0, 0.3)
+  ); /* Subtle shadow for depth */
+}
+
+.image.logo:hover {
+  transform: scale(1.1); /* Slight scale-up on hover */
+  filter: drop-shadow(
+    0px 6px 8px rgba(0, 0, 0, 0.5)
+  ); /* Darker shadow on hover */
+}
+
+.logo2 {
+  color: #c5f8f1;
+}
+
+/* Search Form */
+
+.search-form {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  margin: 0 20px;
+  justify-content: center;
+}
+
+.search-input {
+  padding: 8px;
+  border: none;
+  border-radius: 50px 0 0 50px;
+  outline: none;
+  flex: 0.8;
+  min-width: 150px;
+  background-color: #faf8f5e1;
+}
+
+.search-button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #14dceb;
+  color: #052549;
+  border-radius: 0 50px 50px 0;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background-color 0.8s;
+}
+
+.search-button:hover {
+  background-color: #052549;
+  color: #14dceb;
+  box-shadow: 9px 10px 20px #14dceb;
+  transition: background-color 0.8s;
+}
+
+/* Navbar Links */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+/* Navbar Items */
+.item {
+  color: #14dceb;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+/* Highlight Cart Item */
+.cart {
+  position: relative;
+}
+
+/* Cart Count Bubble */
+.cart-count {
+  background-color: #ff0000;
+  color: #ffffff;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.8em;
+  position: absolute;
+  top: -5px;
+  right: -10px;
+}
+
+/* Hover Effect */
+.item:hover {
+  background-color: #14dceb;
+  color: #333;
+  transition: 0.3s;
+}
+
+/* Responsive Hamburger Icon */
+.hamburger {
+  display: none;
+  font-size: 1.8em;
+  cursor: pointer;
+}
+
+/* Navbar2 Start */
+.nav.nav-tabs {
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.nav {
+  background-color: #d3dde767;
+  /* background: linear-gradient(180deg, #d3dde767 80%, #52565a67 20%); */
+}
+
+.hub {
+  color: white;
+  background-color: #0fd0f1a6;
+  border-radius: 5px 0 0 5px;
+  padding-left: 5px;
+  font-weight: 600;
+  font-size: 1.2em;
+}
+
+.tronics {
+  color: #0fd0f1a6;
+  font-weight: 600;
+  background-color: #052549;
+  padding-right: 5px;
+  font-size: 1.2em;
+  border-radius: 0 5px 5px 0;
+}
+
+.cat {
+  color: #119099;
+  font-weight: 600;
+}
+
+.cat2 {
+  color: #14dceb;
+  font-weight: 600;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: #333;
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    left: 0;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}

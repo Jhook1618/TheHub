@@ -1,0 +1,11 @@
+.home {
+  /* background-color: #27b7f063; Replace with your desired color */
+  min-height: auto; /* Ensures it covers the full viewport height */
+  /* background: linear-gradient(150deg, #00e1ff, #116270, #03055f); */
+  font-family: "poppins", Arial, Helvetica, sans-serif;
+  /* margin-left: 20rem;
+  margin-right: 20rem; */
+  /* border-radius: 10px; */
+  padding-bottom: 50px;
+  box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.2);
+}

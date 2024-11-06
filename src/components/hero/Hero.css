@@ -1,0 +1,79 @@
+/* Carousel container */
+.carousel-container {
+  max-width: 900px;
+  margin: auto;
+  margin-top: 50px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .carousel-container {
+    max-width: 100%; /* Full width on small screens */
+    margin-top: 30px;
+  }
+}
+
+/* Hero Paragraph */
+.carousel-text {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  color: aqua;
+  transform: translate(-50%);
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: rgba(238, 225, 225, 0.5);
+  padding: 10px 20px;
+  border-radius: 8px;
+  z-index: 1;
+  text-align: center;
+}
+
+/* Adjust text size for smaller screens */
+@media (max-width: 768px) {
+  .carousel-text {
+    font-size: 1.2rem;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-text {
+    font-size: 1rem;
+    padding: 6px 12px;
+  }
+}
+
+/* HubTronics Text Styling */
+.hub1 {
+  color: #fff;
+  background-color: aqua;
+  border-radius: 20% 0 0 20%;
+  padding-left: 5px;
+}
+
+.tronics1 {
+  background-color: #052549;
+  border-radius: 0 10% 10% 0;
+  padding-right: 5px;
+}
+
+/* Carousel Images */
+.carousel .slide img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Centered HubTronics text adjusts on small screens */
+@media (max-width: 480px) {
+  .hub1,
+  .tronics1 {
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 1rem;
+  }
+}
