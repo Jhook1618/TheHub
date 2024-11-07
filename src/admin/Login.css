@@ -1,6 +1,6 @@
-/* Apply the styles specifically to the Login component */
+Apply the styles specifically to the Login component
 .login-container {
-  background: linear-gradient(to left, rgb(21, 181, 221), white);
+  background: linear-gradient(to left, rgb(21, 181, 221), rgb(228, 220, 220));
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -17,8 +17,8 @@
 
 .form-box {
   width: 380px;
-  height: 550px;
-  background-color: rgba(255, 255, 255, 0.7);
+  height: 450px;
+  background-color: rgba(105, 211, 230, 0.7);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -51,13 +51,13 @@ input[type="password"] {
   color: rgb(14, 186, 216);
 }
 
-button {
+.button-login {
   width: 100%;
   padding: 10px;
   margin-top: 20px;
   background-color: green;
   border: none;
-  color: white;
+  color: rgb(194, 186, 186);
   font-size: 16px;
   cursor: pointer;
   border-radius: 4px;
@@ -80,18 +80,28 @@ button:hover {
   cursor: pointer;
 }
 
-.social {
-  display: flex;
-  justify-content: space-around;
-  padding-top: 30px;
+.auth-buttons {
+  display: flex;           /* Arrange buttons in a row */
+  gap: 12px;               /* Space between the buttons */
+  justify-content: center; /* Center buttons horizontally */
+  margin-top: 20px;        /* Adjust spacing above the button group */
 }
 
-.social i {
-  font-size: 35px;
+.auth-buttons button {
+  width: 100%;             /* Make buttons full-width within their flex space */
+  max-width: 200px;        /* Set a max-width to control the button size */
+  padding: 10px;           /* Padding inside buttons */
+  border: none;
   color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.social i:hover {
-  color: red;
-  cursor: pointer;
+.google-button {
+  background-color: #34af29; /* Google button color */
+}
+
+.facebook-button {
+  background-color: #878fa0; /* Facebook button color */
 }

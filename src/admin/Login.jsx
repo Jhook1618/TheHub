@@ -17,7 +17,7 @@ const Login = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log('User logged in:', user);
-        navigate('/dashboard');
+        navigate('/');
       })
       .catch((error) => {
         setError(error.message);
@@ -32,7 +32,7 @@ const Login = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log('User signed up:', user);
-        navigate('/dashboard'); // Redirect after successful sign up
+        navigate('/'); // Redirect after successful sign up
       })
       .catch((error) => {
         setError(error.message);
@@ -58,7 +58,7 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         console.log('Google login successful:', user);
-        navigate('/dashboard');
+        navigate('/');
       })
       .catch((error) => {
         setError(error.message);
@@ -72,7 +72,7 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         console.log('Facebook login successful:', user);
-        navigate('/dashboard');
+        navigate('/');
       })
       .catch((error) => {
         setError(error.message);
@@ -81,13 +81,13 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="container">
-        <div className="form-box">
-          <h2 className="header-form">{isSignUp ? 'Sign Up' : 'Login'}</h2>
-          <form onSubmit={isSignUp ? handleEmailSignUp : handleEmailLogin}>
-            <div>
-              <label>Email:</label>
+        <div className="login-container">
+          <div className="container">
+            <div className="form-box">
+              <h2 className="header-form">{isSignUp ? 'Sign Up' : 'Login'}</h2>
+              <form onSubmit={isSignUp ? handleEmailSignUp : handleEmailLogin}>
+                <div>
+                  <label>Email:</label>
               <input
                 type="email"
                 value={email}
@@ -135,6 +135,8 @@ const Login = () => {
         </div>
       </div>
     </div>
+  
+    
   );
 };
 
