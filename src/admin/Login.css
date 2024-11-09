@@ -1,0 +1,107 @@
+Apply the styles specifically to the Login component
+.login-container {
+  background: linear-gradient(to left, rgb(21, 181, 221), rgb(228, 220, 220));
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100vh; /* Makes sure the background covers the whole viewport */
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.form-box {
+  width: 380px;
+  height: 450px;
+  background-color: rgba(105, 211, 230, 0.7);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  opacity: 0.8;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.header-form {
+  margin-bottom: 15px;
+  color: rgb(26, 17, 17);
+  text-align: center;
+  font-size: 24px;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: none;
+  background-color: #af3232;
+  color: rgb(14, 186, 216);
+}
+
+.button-login {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: green;
+  border: none;
+  color: rgb(194, 186, 186);
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: darkgreen;
+}
+
+.message {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #141010;
+}
+
+.message span:hover {
+  color: lightgreen;
+  cursor: pointer;
+}
+
+.auth-buttons {
+  display: flex;           /* Arrange buttons in a row */
+  gap: 12px;               /* Space between the buttons */
+  justify-content: center; /* Center buttons horizontally */
+  margin-top: 20px;        /* Adjust spacing above the button group */
+}
+
+.auth-buttons button {
+  width: 100%;             /* Make buttons full-width within their flex space */
+  max-width: 200px;        /* Set a max-width to control the button size */
+  padding: 10px;           /* Padding inside buttons */
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.google-button {
+  background-color: #34af29; /* Google button color */
+}
+
+.facebook-button {
+  background-color: #878fa0; /* Facebook button color */
+}
