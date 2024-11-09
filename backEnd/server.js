@@ -24,11 +24,7 @@ const client = new MongoClient(uri, {
 // Hard-coded Cloudinary API credentials
 cloudinary.config({
   cloud_name: "deafmthof", // Replace with your Cloudinary cloud name
-<<<<<<< HEAD
   api_key: "247347863723954", // Replace with your Cloudinary API key
-=======
-  api_key: "247347863723954",       // Replace with your Cloudinary API key
->>>>>>> c192ec8eb4baf60b0a5d412666282c7faaa73abb
   api_secret: "kYPKhul8iCOI10BrXkE1XQH7aoQ", // Replace with your Cloudinary API secret
 });
 
@@ -70,13 +66,9 @@ app.get("/products", async (req, res) => {
 
           if (searchResult.resources.length > 0) {
             const imageUrl = searchResult.resources[0].url;
-<<<<<<< HEAD
             console.log(
               `Generated Cloudinary URL for ${cloudinarySafeName}: ${imageUrl}`
             );
-=======
-            console.log(`Generated Cloudinary URL for ${cloudinarySafeName}: ${imageUrl}`);
->>>>>>> c192ec8eb4baf60b0a5d412666282c7faaa73abb
 
             // Update product in MongoDB with the Cloudinary URL
             await collection.updateOne(
@@ -93,13 +85,9 @@ app.get("/products", async (req, res) => {
             return product; // No image found, return the product as is
           }
         } catch (error) {
-<<<<<<< HEAD
           console.error(
             `Error searching for image ${cloudinarySafeName}: ${error.message}`
           );
-=======
-          console.error(`Error searching for image ${cloudinarySafeName}: ${error.message}`);
->>>>>>> c192ec8eb4baf60b0a5d412666282c7faaa73abb
           return product; // Handle error gracefully
         }
       })
@@ -111,11 +99,7 @@ app.get("/products", async (req, res) => {
     res.status(500).json({ message: "Error fetching products" });
   } finally {
     // Check Cloudinary connection by making a simple API request
-<<<<<<< HEAD
-    cloudinary.v2.api.ping(function (error) {
-=======
     cloudinary.v2.api.ping(function (error, result) {
->>>>>>> c192ec8eb4baf60b0a5d412666282c7faaa73abb
       if (error) {
         console.error("Error connecting to Cloudinary:", error);
       } else {
