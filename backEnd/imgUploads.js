@@ -2,6 +2,8 @@ import express from "express";
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
+// import fs from "fs";
+// import path from "path";
 
 dotenv.config();
 
@@ -19,24 +21,35 @@ cloudinary.config({
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// Route to upload image
-app.post("/upload", upload.single("image"), async (req, res) => {
+// Route to upload multiple images from a directory
+app.post("/upload-directory", upload.array("images"), async (req, res) => {
   try {
-    // Upload image to Cloudinary
-    const result = await cloudinary.uploader.upload_stream(
-      { resource_type: "auto" }, // Auto-type detection for images
-      (error, result) => {
-        if (error) {
-          return res.status(500).json({ message: "Upload failed", error });
-        }
-        res.json({ success: true, url: result.secure_url }); // Return URL
-      }
-    );
-    // Pipe image to Cloudinary
-    result.end(req.file.buffer); // Send file buffer to Cloudinary
+    // Array to store Cloudinary URLs
+    const uploadResults = [];
+
+    // Loop through each file and upload to Cloudinary
+    for (const file of req.files) {
+      await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { resource_type: "auto" },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              uploadResults.push(result.secure_url);
+              resolve();
+            }
+          }
+        );
+        // Pipe the file buffer to the Cloudinary upload stream
+        uploadStream.end(file.buffer);
+      });
+    }
+
+    res.json({ success: true, urls: uploadResults }); // Return all URLs
   } catch (error) {
-    console.error("Error uploading to Cloudinary:", error);
-    res.status(500).json({ message: "Error uploading image", error });
+    console.error("Error uploading images:", error);
+    res.status(500).json({ message: "Error uploading images", error });
   }
 });
 

@@ -3,7 +3,7 @@ import "./Footer.css";
 const Footer = () => {
   return (
     <div className="footer">
-      Copy Write <span className="copy-icon">&copy;</span>&nbsp; 2024 &nbsp;
+      Copyrite <span className="copy-icon">&copy;</span>&nbsp; 2024 &nbsp;
       <span className="hub2">Hub</span>
       <span className="tronics2">TRONICS</span>{" "}
       <span className="copy-icon">&trade;</span>

@@ -23,7 +23,14 @@ const Navbar = () => {
       {/* Navbar1 Start*/}
       <div className="nav-bar container">
         <div className="logo">
-          <img src={logo} alt="HubTronics" className="image logo" />
+          <Link
+            className={"nav-link active"}
+            aria-current="page"
+            to="/"
+            onClick={() => handleTabClick("Login")}
+          >
+            <img src={logo} alt="HubTronics" className="image logo" />
+          </Link>
         </div>
 
         {/* Search Form */}
@@ -80,7 +87,7 @@ const Navbar = () => {
         <li className="nav-item">
           <Link
             className={`nav-link ${activeTab === "shop" ? "active" : ""}`}
-            to="/Product"
+            to="/ProductList"
             onClick={() => handleTabClick("shop")}
           >
             <span className="cat2">Shop</span>
