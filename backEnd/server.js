@@ -2,6 +2,7 @@ import express from "express";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import cors from "cors";
 import path from "path";
+import { ObjectId } from "mongodb";
 import cloudinary from "cloudinary";
 import dotenv from "dotenv";
 
@@ -9,7 +10,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 // MongoDB URI from .env file
 const uri = process.env.MONGODB_URI;
@@ -30,87 +31,101 @@ cloudinary.config({
 
 app.use(cors());
 
-// Define the route to get products
-app.get("/products", async (req, res) => {
+(async () => {
   try {
-    // Check MongoDB connection
+    // Connect to MongoDB once at startup
     await client.connect();
     console.log("Connected to MongoDB");
 
-    const collection = client.db("hubtronics").collection("products");
-    const products = await collection.find({}).toArray();
+    // Check Cloudinary connection
+    await cloudinary.v2.api.ping();
+    console.log("Connected to Cloudinary");
 
-    const updatedProducts = await Promise.all(
-      products.map(async (product) => {
-        // Skip if Cloudinary URL already exists
-        if (product.cloudinary_url) {
-          console.log(`Using existing Cloudinary URL for ${product.name}`);
-          return product;
-        }
+    // Define the route to get products
+    app.get("/products", async (req, res) => {
+      try {
+        const collection = client.db("hubtronics").collection("products");
 
-        // Extract the image name from main_image_path (replace backslashes)
-        const imagePath = product.main_image_path.replace(/\\/g, "/");
-        const imageName = path.basename(imagePath);
+        // get the 'limit' query parameter from the request
+        const limit = parseInt(req.query.limit) || 20; // Default to 20 if no limit is provided
 
-        // Ensure the image name is URL-safe
-        const cloudinarySafeName = imageName
-          .replace(/\s+/g, "_") // Replace spaces with underscores
-          .replace(/[&/\\#,+()$~%.'":*?<>{}]/g, ""); // Remove special characters
+        const products = await collection.find({}).limit(limit).toArray();
 
-        // Search for the image in Cloudinary
-        try {
-          const searchResult = await cloudinary.v2.search
-            .expression(`filename:${cloudinarySafeName}`)
-            .max_results(1)
-            .execute();
+        const updatedProducts = await Promise.all(
+          products.map(async (product) => {
+            if (product.cloudinary_url) {
+              console.log(`Using existing Cloudinary URL for ${product.name}`);
+              return product;
+            }
 
-          if (searchResult.resources.length > 0) {
-            const imageUrl = searchResult.resources[0].url;
-            console.log(
-              `Generated Cloudinary URL for ${cloudinarySafeName}: ${imageUrl}`
-            );
+            const imagePath = product.main_image_path.replace(/\\/g, "/");
+            const imageName = path
+              .basename(imagePath)
+              .replace(/\s+/g, "_")
+              .replace(/[&/\\#,+()$~%.'":*?<>{}]/g, "");
 
-            // Update product in MongoDB with the Cloudinary URL
-            await collection.updateOne(
-              { _id: product._id },
-              { $set: { cloudinary_url: imageUrl } }
-            );
+            try {
+              const searchResult = await cloudinary.v2.search
+                .expression(`filename:${imageName}`)
+                .max_results(1)
+                .execute();
 
-            return {
-              ...product,
-              cloudinary_url: imageUrl,
-            };
-          } else {
-            console.log(`Image not found for ${cloudinarySafeName}`);
-            return product; // No image found, return the product as is
-          }
-        } catch (error) {
-          console.error(
-            `Error searching for image ${cloudinarySafeName}: ${error.message}`
-          );
-          return product; // Handle error gracefully
-        }
-      })
-    );
+              if (searchResult.resources.length > 0) {
+                const imageUrl = searchResult.resources[0].url;
+                console.log(
+                  `Generated Cloudinary URL for ${imageName}: ${imageUrl}`
+                );
 
-    res.json(updatedProducts); // Send the final products data with Cloudinary URLs
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    res.status(500).json({ message: "Error fetching products" });
-  } finally {
-    // Check Cloudinary connection by making a simple API request
-    cloudinary.v2.api.ping(function (error, result) {
-      if (error) {
-        console.error("Error connecting to Cloudinary:", error);
-      } else {
-        console.log("Connected to Cloudinary");
+                await collection.updateOne(
+                  { _id: product._id },
+                  { $set: { cloudinary_url: imageUrl } }
+                );
+
+                return { ...product, cloudinary_url: imageUrl };
+              } else {
+                console.log(`Image not found for ${imageName}`);
+                return product;
+              }
+            } catch (error) {
+              console.error(
+                `Error searching for image ${imageName}: ${error.message}`
+              );
+              return product;
+            }
+          })
+        );
+
+        res.json(updatedProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        res.status(500).json({ message: "Error fetching products" });
       }
     });
 
-    await client.close();
-  }
-});
+    app.get("/api/products/:productId", async (req, res) => {
+      try {
+        const { productId } = req.params;
+        const collection = client.db("hubtronics").collection("products");
+        const product = await collection.findOne({
+          _id: new ObjectId(productId),
+        });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+        if (!product) {
+          return res.status(404).json({ message: "Product not found" });
+        }
+
+        res.json(product);
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+        res.status(500).json({ message: "Error fetching product details" });
+      }
+    });
+
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+})();

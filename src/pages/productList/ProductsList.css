@@ -2,12 +2,15 @@
 .grid-container {
   display: grid;
   grid-template-columns: repeat(4, minmax(180px, 1fr));
-  gap: 1rem 0.1rem;
+  gap: 1rem 1rem;
   max-width: 78%;
   margin: auto;
   justify-items: center;
   align-items: start;
   padding: 3rem;
+
+  /* cursor: pointer; */
+  /* background-color: blue; */
 }
 
 /* Grid Item */
@@ -16,13 +19,18 @@
   box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 1rem;
-  background-color: #f9f9f9;
+  cursor: pointer;
+  /* background-color: yellow; */
+}
+
+.grid-item:hover {
 }
 
 /* Image Styling */
 .grid-image {
   width: 100%;
   height: 15rem;
+  size: 300px 300px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 0.5rem;
@@ -33,7 +41,12 @@
   padding: 0.5rem;
 }
 
-.item-name {
+.category {
+  color: #666;
+  font-size: 0.8em;
+}
+
+.item-name.product {
   font-size: 1.2rem;
   font-weight: bold;
   margin: 0.5rem 0;
@@ -45,10 +58,14 @@
   margin: 0.5rem 0;
 }
 
-.item-price {
-  font-size: 1.1rem;
+.item-price.product {
+  font-size: 1.2rem;
   font-weight: bold;
   color: #333;
+}
+
+.price {
+  color: rgb(6, 162, 6);
 }
 
 .item-availability {

@@ -1,26 +1,24 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./ProductsList.css";
 
-const Product = () => {
+const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [displayLimit, setDisplayLimit] = useState(20);
 
   useEffect(() => {
-    // Fetch products with a limit based on displayLimit
-    fetch("http://localhost:5000/products")
+    fetch(`http://localhost:5000/products?limit=${displayLimit}`)
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error("Error fetching data:", error));
-  }, [displayLimit]); // Refresh if display limit changes
+  }, [displayLimit]);
 
-  // Handle for changing the number of items to display
   const handleLimitChange = (e) => {
     setDisplayLimit(Number(e.target.value));
   };
 
   return (
     <>
-      {/* Dropdown to select the number of items to load */}
       <div className="filter-container">
         <label htmlFor="displayLimit">Show:&nbsp;</label>
         <select
@@ -39,25 +37,33 @@ const Product = () => {
 
       <div className="grid-container">
         {products.map((product) => (
-          <div key={product._id} className="grid-item">
-            {product.cloudinary_url && (
-              <img
-                src={product.cloudinary_url}
-                alt={product.name}
-                className="grid-image"
-              />
-            )}
-            <div className="item-info">
-              <h3 className="item-name">{product.name}</h3>
-              <p className="item-price">Price: Ksh.{product.price}</p>
-              {/* <p>{product.product_block}</p> */}
-              {/* <p className="item-availability">{item-availability}</p> */}
+          <Link
+            to={`/product/${product._id}`}
+            key={product._id}
+            className="product-link"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <div className="grid-item">
+              {product.cloudinary_url && (
+                <img
+                  src={product.cloudinary_url}
+                  alt={product.name}
+                  className="grid-image"
+                />
+              )}
+              <div className="item-info">
+                <p className="category">{product.category}</p>
+                <h3 className="item-name product">{product.name}</h3>
+                <p className="item-price product">
+                  Price: <span className="price">{product.price}</span>
+                </p>
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </>
   );
 };
 
-export default Product;
+export default ProductList;
