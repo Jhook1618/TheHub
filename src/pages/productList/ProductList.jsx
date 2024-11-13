@@ -50,7 +50,8 @@ const Product = () => {
             <div className="item-info">
               <h3 className="item-name">{product.name}</h3>
               <p className="item-price">Price: Ksh.{product.price}</p>
-              {/* <p>{product.product_block}</p> */}
+              {/* <p className="category">category: {product.category}</p> */}
+              {/* <p>{product.description}</p> */}
               {/* <p className="item-availability">{item-availability}</p> */}
             </div>
           </div>

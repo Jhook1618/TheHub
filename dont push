@@ -1,0 +1,136 @@
+#product-35901 > div > div.product-main > div > div.product-gallery.col.large-6 > div.product-images.relative.mb-half.has-hover.woocommerce-product-gallery.woocommerce-product-gallery--with-images.woocommerce-product-gallery--columns-4.images > div.woocommerce-product-gallery__wrapper.product-gallery-slider.slider.slider-nav-small.mb-half.slider-lazy-load-active.is-draggable.flickity-enabled > div > div > div.woocommerce-product-gallery__image.slide.first.is-selected > a > img
+#product-35901 > div > div.product-main > div > div.product-gallery.col.large-6 > div.product-thumbnails.thumbnails.slider-no-arrows.slider.row.row-small.row-slider.slider-nav-small.small-columns-4.slider-lazy-load-active.is-draggable.flickity-enabled > div > div > div:nth-child(2) > a > img
+#product-35901 > div > div.product-main > div > div.product-info.summary.col.col-fit.entry-summary.product-summary.text-left.form-minimal > h1
+#product-35901 > div > div.product-main > div > div.product-info.summary.col.col-fit.entry-summary.product-summary.text-left.form-minimal > div.price-wrapper > p > span > bdi
+#product-35901 > div > div.product-main > div > div.product-info.summary.col.col-fit.entry-summary.product-summary.text-left.form-minimal > div.product_meta > span
+#product-description > div > div:nth-child(1) > p:nth-child(2)
+
+
+
+https://ktechnics.com/product-category/computer-accessories/
+https://ktechnics.com/product-category/development-platforms/
+https://ktechnics.com/product-category/aeronautics-robotics/
+https://ktechnics.com/product-category/battery-chargers/
+https://ktechnics.com/product-category/components/
+https://ktechnics.com/product-category/gyro-accelerometer/
+https://ktechnics.com/product-category/intergrated-circuits/
+https://ktechnics.com/product-category/lcds-displays/
+https://ktechnics.com/product-category/microcontrollers/
+https://ktechnics.com/product-category/programmers/
+https://ktechnics.com/product-category/prototyping-tools/
+https://ktechnics.com/product-category/relays-motors-valves/
+https://ktechnics.com/product-category/sensors/
+https://ktechnics.com/product-category/arduino-shields-modules/
+https://ktechnics.com/product-category/wireless-devices/
+https://ktechnics.com/product-category/uncategorized/
+
+https://ktechnics.com/product-category/development-platforms/page/2/
+https://ktechnics.com/product-category/development-platforms/page/3/
+
+
+
+import express from "express";
+import { MongoClient, ServerApiVersion } from "mongodb";
+import cors from "cors";
+import cloudinary from "cloudinary";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const app = express();
+const port = 5000;
+
+// MongoDB URI from .env file
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
+
+// Hard-coded Cloudinary API credentials
+cloudinary.config({
+  cloud_name: "deafmthof", // Replace with your Cloudinary cloud name
+  api_key: "247347863723954", // Replace with your Cloudinary API key
+  api_secret: "kYPKhul8iCOI10BrXkE1XQH7aoQ", // Replace with your Cloudinary API secret
+});
+
+app.use(cors());
+
+app.get("/products", async (req, res) => {
+  try {
+    // Connect to MongoDB
+    await client.connect();
+    console.log("Connected to MongoDB");
+
+    const collection = client.db("hubtronics").collection("products");
+    const products = await collection.find({}).toArray();
+
+    const updatedProducts = await Promise.all(
+      products.map(async (product) => {
+        // Skip if Cloudinary URL already exists
+        if (product.cloudinary_url) {
+          console.log(`Using existing Cloudinary URL for ${product.name}`);
+          return product;
+        }
+
+        // Extract the image name based on the product "name" field
+        const productName = product.name.replace(/\s+/g, "_").replace(/[&/\\#,+()$~%.'":*?<>{}]/g, "");
+        const imageUrl = product.image_src; // use image_src field for URL
+
+        try {
+          // Search Cloudinary to check if the image is already uploaded
+          const searchResult = await cloudinary.v2.search
+            .expression(`filename:${productName}`)
+            .max_results(1)
+            .execute();
+
+          if (searchResult.resources.length > 0) {
+            const existingImageUrl = searchResult.resources[0].url;
+            console.log(`Found existing image for ${productName} on Cloudinary.`);
+
+            // Update MongoDB with the existing Cloudinary URL
+            await collection.updateOne(
+              { _id: product._id },
+              { $set: { cloudinary_url: existingImageUrl } }
+            );
+
+            return { ...product, cloudinary_url: existingImageUrl };
+          } else {
+            // Upload the image to Cloudinary if not found
+            const uploadResponse = await cloudinary.v2.uploader.upload(imageUrl, {
+              public_id: productName,
+              folder: "products", // Optional: organize images in a folder
+            });
+
+            console.log(`Uploaded new image for ${productName} to Cloudinary.`);
+
+            // Update MongoDB with the new Cloudinary URL
+            await collection.updateOne(
+              { _id: product._id },
+              { $set: { cloudinary_url: uploadResponse.secure_url } }
+            );
+
+            return { ...product, cloudinary_url: uploadResponse.secure_url };
+          }
+        } catch (error) {
+          console.error(`Error handling image for ${product.name}: ${error.message}`);
+          return product; // Return product as-is if error occurs
+        }
+      })
+    );
+
+    res.json(updatedProducts); // Send the products with updated Cloudinary URLs
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ message: "Error fetching products" });
+  } finally {
+    await client.close();
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
