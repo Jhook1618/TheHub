@@ -10,32 +10,37 @@ import Category from "./pages/categories/Categories";
 import SearchResults from "./pages/searchResults/SearchResults";
 import About from "./components/about/About";
 import Footer from "./components/footer/Footer";
+import ProductDetails from "./components/productDetails/ProductDetails";
 // Pages Imports End
+import { CartProvider } from "./components/cartComponents/CartProvider";
 
 const App = () => {
   return (
-    <Router>
-      <div>
-        {/* Navbar */}
-        <Navbar />
+    <CartProvider>
+      <Router>
+        <div>
+          {/* Navbar */}
+          <Navbar />
 
-        {/* Routes */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/ProductList" element={<Product />} />
-          <Route path="/Cart" element={<Cart />} />
-          <Route path="/Category" element={<Category />} />
-          <Route path="/Search" element={<SearchResults />} />
-          {/* Admin Login Route */}
-          <Route path="/Login" element={<Login />} />{" "}
-          {/* This points to your Firebase login page */}
-        </Routes>
+          {/* Routes */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/ProductList" element={<Product />} />
+            <Route path="/product/:productId" element={<ProductDetails />} />
+            <Route path="/Cart" element={<Cart />} />
+            <Route path="/Category" element={<Category />} />
+            <Route path="/Search" element={<SearchResults />} />
+            {/* Admin Login Route. This points to your Firebase login page */}
+            <Route path="/Login" element={<Login />} /> {/* Login End */}
+          </Routes>
 
-        {/* Footer Section */}
-        <About />
-        <Footer />
-      </div>
-    </Router>
+          {/* Footer Section Start */}
+          <About />
+          <Footer />
+          {/* Footer Section End */}
+        </div>
+      </Router>
+    </CartProvider>
   );
 };
 

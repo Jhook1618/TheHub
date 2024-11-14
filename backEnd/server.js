@@ -1,151 +1,131 @@
 import express from "express";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import cors from "cors";
+import path from "path";
+import { ObjectId } from "mongodb";
 import cloudinary from "cloudinary";
 import dotenv from "dotenv";
 
+// Load environment variables
 dotenv.config();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
-// MongoDB connection setup
+// MongoDB URI from .env file
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-    connectTimeoutMS: 30000,
-    socketTimeoutMS: 45000,
   },
 });
 
-let db;
-
-const connectDB = async () => {
-  if (!db) {
-    try {
-      await client.connect();
-      db = client.db("hubtronics");
-      console.log("Connected to MongoDB");
-    } catch (error) {
-      console.error("Error connecting to MongoDB:", error);
-      throw error;
-    }
-  }
-};
-
-const cleanImageName = (imageName) => {
-  const baseName = imageName.split("_")[0]; // Get the part before the underscore
-  return baseName.split(".")[0]; // Remove file extension
-};
-
+// Hard-coded Cloudinary API credentials
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: "deafmthof", // Replace with your Cloudinary cloud name
+  api_key: "247347863723954", // Replace with your Cloudinary API key
+  api_secret: "kYPKhul8iCOI10BrXkE1XQH7aoQ", // Replace with your Cloudinary API secret
 });
 
 app.use(cors());
 
-// Limit of products to process per hour
-const PRODUCTS_PER_HOUR = 500;
-
-// Endpoint to update Cloudinary URLs in MongoDB
-app.get("/update-cloudinary-urls", async (req, res) => {
+(async () => {
   try {
-    await connectDB(); // Ensure DB is connected before starting the operation
-    const collection = db.collection("products");
+    // Connect to MongoDB once at startup
+    await client.connect();
+    console.log("Connected to MongoDB");
 
-    const products = await collection
-      .find({ cloudinary_url: "", cloudinary_checked: { $ne: true } })
-      .limit(PRODUCTS_PER_HOUR)
-      .toArray();
+    // Check Cloudinary connection
+    await cloudinary.v2.api.ping();
+    console.log("Connected to Cloudinary");
 
-    console.log(`Found ${products.length} products to process.`);
+    // Define the route to get products
+    app.get("/products", async (req, res) => {
+      try {
+        const collection = client.db("hubtronics").collection("products");
 
-    const updatedProducts = await Promise.all(
-      products.map(async (product) => {
-        let cloudinaryUrl = product.cloudinary_url;
+        // get the 'limit' query parameter from the request
+        const limit = parseInt(req.query.limit) || 20; // Default to 20 if no limit is provided
 
-        if (!cloudinaryUrl) {
-          const imageName = cleanImageName(product.image_src.split("/").pop());
-          console.log(`Searching for Cloudinary image with base name: ${imageName}`);
+        const products = await collection.find({}).limit(limit).toArray();
 
-          try {
-            const searchResult = await cloudinary.v2.search
-              .expression(`filename:${imageName}*`)
-              .max_results(1)
-              .execute();
-
-            if (searchResult.resources.length > 0) {
-              cloudinaryUrl = searchResult.resources[0].secure_url;
-              console.log(`Cloudinary URL found for ${product.name}: ${cloudinaryUrl}`);
-
-              // Update MongoDB with Cloudinary URL
-              const updateResult = await collection.updateOne(
-                { _id: product._id },
-                { $set: { cloudinary_url: cloudinaryUrl, cloudinary_checked: true } }
-              );
-
-              if (updateResult.modifiedCount > 0) {
-                console.log(`Successfully updated MongoDB for product: ${product.name}`);
-              } else {
-                console.log(`No update made for product: ${product.name}. It may have already been updated.`);
-              }
-            } else {
-              console.log(`No Cloudinary image found for ${product.name}`);
-              await collection.updateOne(
-                { _id: product._id },
-                { $set: { cloudinary_checked: true } }
-              );
-              console.log(`Marked ${product.name} as checked without finding a Cloudinary image.`);
+        const updatedProducts = await Promise.all(
+          products.map(async (product) => {
+            if (product.cloudinary_url) {
+              console.log(`Using existing Cloudinary URL for ${product.name}`);
+              return product;
             }
-          } catch (error) {
-            console.error(`Error searching image for ${product.name}:`, error);
-            console.error("Full error details:", error);
-          }
-        } else {
-          console.log(`Cloudinary URL already available for ${product.name}: ${cloudinaryUrl}`);
+
+            const imagePath = product.main_image_path.replace(/\\/g, "/");
+            const imageName = path
+              .basename(imagePath)
+              .replace(/\s+/g, "_")
+              .replace(/[&/\\#,+()$~%.'":*?<>{}]/g, "");
+
+            try {
+              const searchResult = await cloudinary.v2.search
+                .expression(`filename:${imageName}`)
+                .max_results(1)
+                .execute();
+
+              if (searchResult.resources.length > 0) {
+                const imageUrl = searchResult.resources[0].url;
+                console.log(
+                  `Generated Cloudinary URL for ${imageName}: ${imageUrl}`
+                );
+
+                await collection.updateOne(
+                  { _id: product._id },
+                  { $set: { cloudinary_url: imageUrl } }
+                );
+
+                return { ...product, cloudinary_url: imageUrl };
+              } else {
+                console.log(`Image not found for ${imageName}`);
+                return product;
+              }
+            } catch (error) {
+              console.error(
+                `Error searching for image ${imageName}: ${error.message}`
+              );
+              return product;
+            }
+          })
+        );
+
+        res.json(updatedProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        res.status(500).json({ message: "Error fetching products" });
+      }
+    });
+
+    app.get("/api/products/:productId", async (req, res) => {
+      try {
+        const { productId } = req.params;
+        const collection = client.db("hubtronics").collection("products");
+        const product = await collection.findOne({
+          _id: new ObjectId(productId),
+        });
+
+        if (!product) {
+          return res.status(404).json({ message: "Product not found" });
         }
 
-        return { ...product, cloudinary_url: cloudinaryUrl };
-      })
-    );
+        res.json(product);
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+        res.status(500).json({ message: "Error fetching product details" });
+      }
+    });
 
-    res.json(updatedProducts);
+    app.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}`);
+    });
   } catch (error) {
-    console.error("Error updating Cloudinary URLs:", error);
-    res.status(500).json({ message: "Error updating Cloudinary URLs" });
+    console.error("Failed to start server:", error);
+    process.exit(1);
   }
-});
-
-// Endpoint to retrieve products
-app.get("/products", async (req, res) => {
-  try {
-    await connectDB(); // Ensure DB is connected before fetching data
-    const collection = db.collection("products");
-
-    const products = await collection
-      .find({})
-      .project({ name: 1, price: 1, description: 1, cloudinary_url: 1, image_src: 1 })
-      .toArray();
-
-    console.log(`Retrieved ${products.length} products from MongoDB.`);
-
-    const productsWithImages = products.map((product) => ({
-      ...product,
-      image_url: product.cloudinary_url || product.image_src,
-    }));
-
-    res.json(productsWithImages);
-  } catch (error) {
-    console.error("Error retrieving products:", error);
-    res.status(500).json({ message: "Error retrieving products" });
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+})();

@@ -1,107 +1,141 @@
-Apply the styles specifically to the Login component
+/* Login.css */
+
 .login-container {
-  background: linear-gradient(to left, rgb(21, 181, 221), rgb(228, 220, 220));
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  height: 100vh; /* Makes sure the background covers the whole viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  /* min-height: 100vh; */
+  /* background: linear-gradient(135deg, #74ebd5, #acb6e5); */
 }
 
-.container {
+.container-login {
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 100%;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  max-width: 400px;
   width: 100%;
 }
 
-.form-box {
-  width: 380px;
-  height: 450px;
-  background-color: rgba(105, 211, 230, 0.7);
-  padding: 20px;
+.form-box-login {
+  text-align: center;
+  width: 100%;
+}
+
+.header-form-login {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1rem;
+  animation: fadeInDown 0.8s ease;
+}
+
+form {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  opacity: 0.8;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-.header-form {
-  margin-bottom: 15px;
-  color: rgb(26, 17, 17);
-  text-align: center;
-  font-size: 24px;
-}
-
-form div {
-  margin-bottom: 15px;
+  gap: 1rem;
 }
 
 input[type="email"],
 input[type="password"] {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease;
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 4px;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #74ebd5;
+}
+
+button[type="submit"] {
+  padding: 0.8rem;
+  font-size: 1rem;
   border: none;
-  background-color: #af3232;
-  color: rgb(14, 186, 216);
-}
-
-.button-login {
-  width: 100%;
-  padding: 10px;
-  margin-top: 20px;
-  background-color: green;
-  border: none;
-  color: rgb(194, 186, 186);
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-button:hover {
-  background-color: darkgreen;
-}
-
-.message {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  font-size: 14px;
-  color: #141010;
-}
-
-.message span:hover {
-  color: lightgreen;
-  cursor: pointer;
-}
-
-.auth-buttons {
-  display: flex;           /* Arrange buttons in a row */
-  gap: 12px;               /* Space between the buttons */
-  justify-content: center; /* Center buttons horizontally */
-  margin-top: 20px;        /* Adjust spacing above the button group */
-}
-
-.auth-buttons button {
-  width: 100%;             /* Make buttons full-width within their flex space */
-  max-width: 200px;        /* Set a max-width to control the button size */
-  padding: 10px;           /* Padding inside buttons */
-  border: none;
+  background-color: #74ebd5;
   color: white;
-  font-size: 16px;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 4px;
+  transition: background-color 0.3s ease;
 }
 
-.google-button {
-  background-color: #34af29; /* Google button color */
+button[type="submit"]:hover {
+  background-color: #54a0b7;
 }
 
-.facebook-button {
-  background-color: #878fa0; /* Facebook button color */
+.auth-buttons.login {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.auth-buttons.login button {
+  flex: 1;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-buttons.login button:hover {
+  filter: brightness(0.9);
+}
+
+.message.login {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.message.login span {
+  color: #54a0b7;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.message.login span:hover {
+  color: #2a6678;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  animation: shake 0.5s ease;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
 }
