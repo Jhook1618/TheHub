@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
-import "./Cart.css";
+import "../../pages/cart/Cart.css";
 
 const CartSummary = ({ total }) => {
   return (
     <div className="cart-summary">
-      <h3>Total: ${total.toFixed(2)}</h3>
+      <h3>Total: Ksh.{total.toFixed(2)}</h3>
       <button className="checkout-button">Proceed to Checkout</button>
     </div>
   );
