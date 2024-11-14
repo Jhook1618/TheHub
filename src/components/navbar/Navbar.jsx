@@ -38,7 +38,7 @@ const Navbar = () => {
   return (
     <>
       {/* Navbar1 Start */}
-      <div className="nav-bar container">
+      <div className="nav-bar-container">
         <div className="logo">
           <Link
             className={"nav-link active"}
@@ -58,12 +58,12 @@ const Navbar = () => {
             className="search-input"
             placeholder="Search..."
           />
-          <button type="submit" className="search-button">
+          <button type="submit" className="search-button-nav">
             Search
           </button>
         </form>
 
-        <div className="item">
+        <div className="item-navbar">
           {/* Conditionally render Login/Register or Welcome message */}
           {user ? (
             <span className="nav-link">
@@ -89,7 +89,7 @@ const Navbar = () => {
             </Link>
           )}
         </div>
-        <div className="item">
+        <div className="item-navbar">
           <Link
             className={`nav-link ${activeTab === "Cart" ? "active" : ""}`}
             to="/Cart"

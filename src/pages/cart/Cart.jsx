@@ -1,7 +1,7 @@
 // Import necessary components and hooks
 import CartItem from "../../components/cartComponents/CartItems";
 import CartSummary from "../../components/cartComponents/CartSummary";
-import { useCart } from "../../components/cartComponents/cartComponents"; // Import the cart context
+import { useCart } from "../../hooks/useCart"; // Import the cart context
 import "./Cart.css";
 
 // Define the Cart component

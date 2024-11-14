@@ -56,7 +56,7 @@ const ProductList = () => {
               <p className="category">{product.category}</p>
               <h3 className="item-name product">{product.name}</h3>
               <p className="item-price product">
-                Price: <span className="price">{product.price}</span>
+                Price: <span className="price">Ksh.{product.price}</span>
               </p>
             </div>
           </Link>

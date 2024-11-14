@@ -1,7 +1,7 @@
 // Import necessary libraries and components
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useCart } from "../cartComponents/cartComponents"; // Import useCart hook to access cart functions
+import { useCart } from "../../hooks/useCart"; // Import useCart hook to access cart functions
 import "./ProductDetails.css";
 
 // Define the ProductDetails component
@@ -61,7 +61,7 @@ function ProductDetails() {
       </div>
       <div className="info-item">
         <h3 className="item-name">{product.name}</h3>
-        <p className="item-price">Price: {product.price}</p>
+        <p className="item-price">Price: Ksh.{product.price}</p>
         <p className="description">{product.description}</p>
 
         {/* Quantity controls for adjusting the selected quantity */}

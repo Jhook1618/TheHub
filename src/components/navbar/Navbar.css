@@ -1,4 +1,4 @@
-.nav-bar.container {
+.nav-bar-container {
   display: flex;
   align-items: center;
   /* justify-content: space-between; */
@@ -12,7 +12,7 @@
 }
 
 /* Navbar Items */
-.item {
+.item-navbar {
   color: #07c0e0c9;
   cursor: pointer;
   text-decoration: none;
@@ -74,7 +74,7 @@
   background-color: #faf8f5e1;
 }
 
-.search-button {
+.search-button-nav {
   padding: 8px 12px;
   border: none;
   background-color: #14dceb;
@@ -85,8 +85,7 @@
   transition: background-color 0.8s;
 }
 
-
-.search-button:hover {
+.search-button-nav:hover {
   background-color: #052549;
   color: #14dceb;
   box-shadow: 9px 10px 20px #14dceb;
@@ -100,7 +99,7 @@
 }
 
 /* Navbar Items */
-.item {
+.item-navbar {
   color: #14dceb;
   cursor: pointer;
   text-decoration: none;

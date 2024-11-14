@@ -90,23 +90,25 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div className="container">
-        <div className="form-box">
-          <h2 className="header-form">{isSignUp ? "Sign Up" : "Login"}</h2>
+      <div className="container-login">
+        <div className="form-box-login">
+          <h2 className="header-form-login">
+            {isSignUp ? "Sign Up" : "Login"}
+          </h2>
           <form onSubmit={isSignUp ? handleEmailSignUp : handleEmailLogin}>
             <div>
-              <label>Email:</label>
               <input
                 type="email"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
             <div>
-              <label>Password:</label>
               <input
                 type="password"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -115,7 +117,7 @@ const Login = () => {
             <button type="submit">{isSignUp ? "Sign Up" : "Login"}</button>
           </form>
 
-          <div className="auth-buttons">
+          <div className="auth-buttons login">
             <button
               onClick={handleGoogleLogin}
               style={{ backgroundColor: "#4285F4", color: "white" }}
@@ -130,7 +132,7 @@ const Login = () => {
             </button>
           </div>
 
-          <div className="message">
+          <div className="message login">
             {isSignUp ? (
               <>
                 <span>Already have an account? </span>

@@ -12,7 +12,7 @@ import About from "./components/about/About";
 import Footer from "./components/footer/Footer";
 import ProductDetails from "./components/productDetails/ProductDetails";
 // Pages Imports End
-import { CartProvider } from "./components/cartComponents/cartComponents";
+import { CartProvider } from "./components/cartComponents/CartProvider";
 
 const App = () => {
   return (
